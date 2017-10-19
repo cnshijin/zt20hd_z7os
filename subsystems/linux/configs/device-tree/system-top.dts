@@ -1,0 +1,32 @@
+/dts-v1/;
+/include/ "system-conf.dtsi"
+/ {
+	usb_phy0: usb_phy@0 {
+		compatible = "usb-nop-xceiv";
+		#phy-cells = <0>;
+	};
+};
+
+&usb0 {
+	dr_mode = "host";
+	usb-phy = <&usb_phy0>;
+};
+
+&amba_pl {
+	xilinx_drm {
+		compatible = "xlnx,drm";
+		xlnx,vtc = <&v_tc_0>;
+		xlnx,rgb2yuv = <&v_rgb2ycrcb_0>;
+		xlnx,cresample = <&v_cresample_0>;
+		xlnx,connector-type = "HDMIA";			
+		xlnx,encoder-slave = <&sii902x>;
+		clocks = <&axi_dynclk_0>;
+		planes {
+			xlnx,pixel-format = "xrgb8888";
+			plane0 {
+				dmas = <&axi_vdma_0 0>;
+				dma-names = "dma0";				
+			};
+		};
+	};
+};
